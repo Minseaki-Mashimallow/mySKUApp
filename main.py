@@ -1,39 +1,38 @@
-import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QTabWidget, QWidget, QVBoxLayout
+from ui.sku_generator_ui import SKUGeneratorUI
+from ui.similarities_calculator_ui import SimilaritiesCalculatorUI
+from controllers.sku_generator_controller import SKUGeneratorController
+from controllers.similarities_calculator_controller import SimilaritiesCalculatorController
 
-
-class MainWindow(QMainWindow):
+class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("MyPyQtApp")
-        self.setGeometry(100, 100, 400, 300)  # x, y, width, height
+        self.setWindowTitle("SKU Generator and Similarities Calculator")
+        self.setGeometry(100, 100, 600, 400)
 
-        # Create a central widget
-        self.central_widget = QWidget(self)
-        self.setCentralWidget(self.central_widget)
+        # Create the tabs
+        self.tabs = QTabWidget(self)
 
-        # Create a layout
-        layout = QVBoxLayout(self.central_widget)
+        # Tab 1: SKU Generator
+        self.sku_ui = SKUGeneratorUI()
+        self.sku_controller = SKUGeneratorController(self.sku_ui)
 
-        # Create a label
-        self.label = QLabel("Hello, PyQt!", self)
-        layout.addWidget(self.label)
+        # Tab 2: Similarities Calculator
+        self.similarity_ui = SimilaritiesCalculatorUI()
+        self.similarity_controller = SimilaritiesCalculatorController(self.similarity_ui)
 
-        # Create a button
-        self.button = QPushButton("Click Me", self)
-        self.button.clicked.connect(self.button_clicked)
-        layout.addWidget(self.button)
+        # Add tabs to the main window
+        self.tabs.addTab(self.sku_ui, "SKU Generator")
+        self.tabs.addTab(self.similarity_ui, "Similarities Calculator")
 
-        # Set layout
-        self.central_widget.setLayout(layout)
-
-    def button_clicked(self):
-        self.label.setText("Button Clicked!")
-
+        # Layout for the whole window
+        main_layout = QVBoxLayout(self)
+        main_layout.addWidget(self.tabs)
+        self.setLayout(main_layout)
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    app = QApplication([])
     window = MainWindow()
     window.show()
-    sys.exit(app.exec())
+    app.exec()
