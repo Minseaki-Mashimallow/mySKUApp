@@ -1,4 +1,6 @@
 from ui.sku_generator_ui import SKUGeneratorUI
+import os
+import sys
 
 class SKUGeneratorController:
     def __init__(self, ui: SKUGeneratorUI):
@@ -6,13 +8,13 @@ class SKUGeneratorController:
         self.ui.sku_button.clicked.connect(self.generate_sku)
 
         # Predefined options
-        self.predefined_supplier = ['INTELLECT']
-        self.predefined_model = ['CM-1', 'CM-2', 'CM-3', 'CRATE COVER']
-        self.predefined_family = ['EGG TRAY', 'ICE CREAM', 'PAIL BODY', 'PAIL COVER']
+        self.predefined_model = []
+        self.predefined_family = []
         self.predefined_colors = ['BLUE', 'RED', 'GREEN']
         self.predefined_sizes = ['1L', '500ml', '2L']
         self.predefined_materials = ['PLASTIC', 'GLASS', 'HDPE']
         self.predefined_virgin = ['01', '02']
+
 
     def generate_sku(self):        
         # Get selected or custom values
