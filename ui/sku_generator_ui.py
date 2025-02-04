@@ -94,6 +94,7 @@ class SKUGeneratorUI(QWidget):
         # Reset all the dropdowns to blank
         self.supplier_input.setCurrentIndex(-1)
         self.model_input.setCurrentIndex(-1)
+        self.family_input.setCurrentIndex(-1)
         self.color_combo.setCurrentIndex(-1)
         self.size_combo.setCurrentIndex(-1)
         self.material_combo.setCurrentIndex(-1)
