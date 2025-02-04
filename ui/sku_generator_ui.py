@@ -5,6 +5,17 @@ from PyQt6.QtGui import QClipboard
 class SKUGeneratorUI(QWidget):
     def __init__(self):
         super().__init__()
+
+        self.supplier_input = QComboBox()
+        self.supplier_input.setEditable(True)
+        self.supplier_input.setPlaceholderText("Select Supplier") 
+        self.supplier_input.addItems(['INTELLECT'])
+
+        self.model_input = QComboBox()
+        self.model_input.setEditable(True)
+        self.model_input.setPlaceholderText("Select Model") 
+        self.model_input.addItems(['CM-1', 'CM-2', 'CM-3', 'CRATE COVER'])  
+        self.model_input.setInsertPolicy(QComboBox.InsertPolicy.InsertAlphabetically)
         
         self.family_input = QComboBox()
         self.family_input.setEditable(True)
@@ -34,6 +45,7 @@ class SKUGeneratorUI(QWidget):
         self.virgin_option.setEditable(True)
         self.virgin_option.setPlaceholderText("Select") 
         self.virgin_option.addItems(['01','02'])
+        
 
         # Generate SKU Button
         self.sku_button = QPushButton("Generate SKU")
@@ -56,6 +68,8 @@ class SKUGeneratorUI(QWidget):
         # Form layout
         layout.addWidget(self.clear_button)
 
+        form_layout.addRow("Supplier:", self.supplier_input)
+        form_layout.addRow("Model:", self.model_input)
         form_layout.addRow("Product Family:", self.family_input)
         form_layout.addRow("Color:", self.color_combo)
         form_layout.addRow("Size:", self.size_combo)
@@ -78,7 +92,8 @@ class SKUGeneratorUI(QWidget):
 
     def clear_all_fields(self):
         # Reset all the dropdowns to blank
-        self.family_input.setCurrentIndex(-1)
+        self.supplier_input.setCurrentIndex(-1)
+        self.model_input.setCurrentIndex(-1)
         self.color_combo.setCurrentIndex(-1)
         self.size_combo.setCurrentIndex(-1)
         self.material_combo.setCurrentIndex(-1)
