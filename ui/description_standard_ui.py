@@ -130,8 +130,9 @@ class DescriptionStandardUI(QWidget):
         ## TODO: SPECIFICALLY CLEAR THE ATTRIBUTES ONLY, NOT INCLUDING THE MODEL AND FAMILY
         ## TODO: HAVE IT SET SO THAT YOU CAN ONLY HAVE THESE AND THEY ARE LOCKED ONCE YOU SELECT A MODEL THAT'S ALREADY MADE 
         ## TODO: POTENTIALLY ALLOW THE USER TO ADD MORE ATTRIBUTES TO THESE IF NECESSARY
-        parameters = db.LoadModelParameters(self.get_product_model())
-        if(len(parameters) > 0):
+        
+        if(db.LoadModel(self.get_product_model())):
+            parameters = db.LoadModelParameters(self.get_product_model())
             for x in parameters:
                 self.add_attribute_field(x)
         else:

@@ -67,6 +67,7 @@ class DescriptionStandardController:
 
         # Show success message
         self.ui.show_save_confirmation()
+        self.ui.product_family_input.addItems([product_family])
     
     @classmethod
     def get_saved_descriptions(cls):
