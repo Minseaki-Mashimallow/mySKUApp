@@ -1,62 +1,33 @@
 from ui.sku_generator_ui import SKUGeneratorUI
-import os
-import sys
+from controllers.description_standard_controller import DescriptionStandardController
 
 class SKUGeneratorController:
     def __init__(self, ui: SKUGeneratorUI):
         self.ui = ui
         self.ui.sku_button.clicked.connect(self.generate_sku)
 
-        # Predefined options
-        self.predefined_model = []
-        self.predefined_family = []
-        self.predefined_colors = ['BLUE', 'RED', 'GREEN']
-        self.predefined_sizes = ['1L', '500ml', '2L']
-        self.predefined_materials = ['PLASTIC', 'GLASS', 'HDPE']
-        self.predefined_virgin = ['01', '02']
+        # load predefined standards from the description standard controller
+        self.saved_standards = DescriptionStandardController.get_saved_descriptions()
 
+    def generate_sku(self):
+        """Generates an SKU based on selected attributes."""
+        selected_family = self.ui.family_input.currentText().strip()
 
-    def generate_sku(self):        
-        # Get selected or custom values
-        supplier = self.ui.supplier_input.currentText().upper()
-        model = self.ui.model_input.currentText().upper()
-        base_sku = self.ui.family_input.currentText().upper()
-        color = self.ui.color_combo.currentText().upper()
-        size = self.ui.size_combo.currentText().upper()
-        material = self.ui.material_combo.currentText().upper()
-        virgin = self.ui.virgin_option.currentText()
+        # check if theres a set standard
+        if selected_family not in self.saved_standards:
+            self.ui.sku_result.setText("Error: No standard found. Set a description standard first.")
+            return
 
-        # Check if user entered new custom values, and save them
-        if color not in self.predefined_colors:
-            self.save_custom_value('color', color)
-        
-        if size not in self.predefined_sizes:
-            self.save_custom_value('size', size)
+        attributes = self.saved_standards[selected_family]  # extract attributes from standard
+        attribute_values = [self.ui.attribute_fields[attr].currentText().strip().upper() for attr in attributes]
 
-        if material not in self.predefined_materials:
-            self.save_custom_value('material', material)
-        
-        # Generate SKU (simple concatenation)
-        generated_sku = f"{supplier} {model} {base_sku} {color} {size} {virgin} {material}"
+        if not all(attribute_values):  # ensure all attributes are filled
+            self.ui.sku_result.setText("Error: Please fill all required attributes.")
+            return
 
-        # Set result label
+        # generate sku based on standard
+        generated_sku = f"{selected_family} " + " ".join(attribute_values)
         self.ui.sku_result.setText(f"Generated SKU: {generated_sku}")
 
-    def save_custom_value(self, category, value):
-        if category == 'color' and value not in self.predefined_colors:
-            self.predefined_colors.append(value)
-            self.ui.color_combo.addItem(value)
-        elif category == 'size' and value not in self.predefined_sizes:
-            self.predefined_sizes.append(value)
-            self.ui.size_combo.addItem(value)
-        elif category == 'virgin' and value not in self.predefined_virgin:
-            self.predefined_virgin.append(value)
-            self.ui.virgin_option.addItem(value)
-        elif category == 'material' and value not in self.predefined_materials:
-            self.predefined_materials.append(value)
-            self.ui.material_combo.addItem(value)
-        elif category == 'model' and value not in self.predefined_model:
-            self.predefined_model.append(value)
-            self.ui.model_input.addItem(value)
+        self.ui.copy_button.setEnabled(True)  # enable copy button
 
-    
