@@ -1,8 +1,9 @@
 from ui.description_standard_ui import DescriptionStandardUI
+from backend import database as db
 
 class DescriptionStandardController:
     saved_descriptions = {} # { 'ICE CREAM': 'ICE CREAM-Color-Size' }
-    saved_families = set()
+    saved_families = db.LoadFamilies() 
     saved_attributes = set()
 
     def __init__(self, ui: DescriptionStandardUI):
@@ -18,6 +19,7 @@ class DescriptionStandardController:
     def view_description(self):
         """Generates the product description standard and updates the UI"""
         product_family = self.ui.get_product_family().strip()
+        product_model = self.ui.get_product_model().strip()
     
         attributes = [attr.strip() for attr in self.ui.get_attributes() if attr.strip()]
 
@@ -28,12 +30,14 @@ class DescriptionStandardController:
         if not attributes:
             self.ui.set_generated_description("Error: At least one attribute is required.")
             return
-
+        
         # Generate the description standard format
         generated_name = f"{product_family}-" + "-".join(attributes)
     
         # Display it to the user
         self.ui.set_generated_description(generated_name)
+
+
         
 
         
@@ -41,23 +45,25 @@ class DescriptionStandardController:
     def save_description(self):
         """Saves the generated description standard and confirms the save."""
         product_family = self.ui.get_product_family().strip()
+        product_model = self.ui.get_product_model().strip()
         attributes = [attr.strip() for attr in self.ui.get_attributes() if attr.strip()]
+
+        ## TODO: FIX THIS TO BE EDITABLE
+        category = "placeholder"
     
         if not product_family or not attributes:
             return  # Prevent saving if data is missing
 
         generated_name = f"{product_family}-" + "-".join(attributes)
-        DescriptionStandardController.saved_descriptions[product_family] = generated_name
 
         # Save product family if not already saved
-        if product_family not in DescriptionStandardController.saved_families:
-            DescriptionStandardController.saved_families.add(product_family)
-            self.ui.product_family_input.addItem(product_family)
+        if product_family not in db.LoadFamilies():
+            db.CreateFamily(product_family, category)
 
-        # Save attributes if they don't exist
-        for attr in attributes:
-            if attr not in DescriptionStandardController.saved_attributes:
-                DescriptionStandardController.saved_attributes.add(attr)
+        # Save product model if not already saved
+        # THIS INCLUDES ATTRIBUTES
+        if product_model not in db.LoadModels(product_family):
+            db.CreateModel(product_model, product_family, attributes)
 
         # Show success message
         self.ui.show_save_confirmation()
