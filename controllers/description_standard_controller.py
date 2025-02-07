@@ -58,11 +58,13 @@ class DescriptionStandardController:
 
         # Save product model if not already saved
         # THIS INCLUDES ATTRIBUTES
-        if product_model not in db.LoadModels(product_family):
+        if db.LoadModel(product_model):
+            self.ui.show_save_fail()
+        else:
+            print(db.LoadModels(product_family))
             db.CreateModel(product_model, product_family, attributes)
             self.ui.product_model_input.addItems([product_model])
-
-        self.ui.show_save_confirmation()
+            self.ui.show_save_confirmation()
 
 
     

@@ -74,6 +74,7 @@ class DescriptionStandardUI(QWidget):
         attribute_dropdown = QComboBox()
         attribute_dropdown.setEditable(True)
         attribute_dropdown.setPlaceholderText("Select Attribute") 
+        ## This guy needed SOMETHING to exist properly and so be able to be removed.
         attribute_dropdown.addItems([str(arg), ""])
         self.attribute_layout.addWidget(attribute_dropdown)
 
@@ -101,6 +102,10 @@ class DescriptionStandardUI(QWidget):
     def show_save_confirmation(self):
         """Displays a success message when a new description standard is saved."""
         self.generated_description_label.setText(self.generated_description_label.text() + "\nSaved New Description Standard!")
+
+    def show_save_fail(self):
+        self.generated_description_label.setText(self.generated_description_label.text()+ "\nFailed to Save New Description Standard.")
+
 
     def clear_all_attributes(self):
         """Resets the UI to its initial state without affecting saved data."""
