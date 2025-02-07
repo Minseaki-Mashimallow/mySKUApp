@@ -37,11 +37,6 @@ class DescriptionStandardController:
         # Display it to the user
         self.ui.set_generated_description(generated_name)
 
-
-        
-
-        
-
     def save_description(self):
         """Saves the generated description standard and confirms the save."""
         product_family = self.ui.get_product_family().strip()
@@ -59,15 +54,17 @@ class DescriptionStandardController:
         # Save product family if not already saved
         if product_family not in db.LoadFamilies():
             db.CreateFamily(product_family, category)
+            self.ui.product_family_input.addItems([product_family])
 
         # Save product model if not already saved
         # THIS INCLUDES ATTRIBUTES
         if product_model not in db.LoadModels(product_family):
             db.CreateModel(product_model, product_family, attributes)
+            self.ui.product_model_input.addItems([product_model])
 
-        # Show success message
         self.ui.show_save_confirmation()
-        self.ui.product_family_input.addItems([product_family])
+
+
     
     @classmethod
     def get_saved_descriptions(cls):

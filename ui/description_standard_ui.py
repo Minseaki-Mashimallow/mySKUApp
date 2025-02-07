@@ -69,12 +69,12 @@ class DescriptionStandardUI(QWidget):
 
         
 
-    def add_attribute_field(self, *args):
+    def add_attribute_field(self, *arg):
         """Adds new attribute input field"""
         attribute_dropdown = QComboBox()
         attribute_dropdown.setEditable(True)
         attribute_dropdown.setPlaceholderText("Select Attribute") 
-        attribute_dropdown.addItems(args)
+        attribute_dropdown.addItems([str(arg), ""])
         self.attribute_layout.addWidget(attribute_dropdown)
 
     def get_product_family(self):
@@ -102,16 +102,33 @@ class DescriptionStandardUI(QWidget):
         """Displays a success message when a new description standard is saved."""
         self.generated_description_label.setText(self.generated_description_label.text() + "\nSaved New Description Standard!")
 
-    def clear_all_fields(self):
+    def clear_all_attributes(self):
         """Resets the UI to its initial state without affecting saved data."""
-        self.product_family_input.setCurrentIndex(-1)  # Deselect product family
-        self.product_model_input.setCurrentIndex(-1)
         self.generated_description_label.setText("Generated Standard: \n")  # Reset text
         # Removes all attribute dropdowns
-        while self.attribute_layout.count():
+        while(self.attribute_layout.count()):
             widget = self.attribute_layout.takeAt(0).widget()
             if widget:
                 widget.hide()
+                widget.setParent(None)
+                widget.deleteLater()
+
+
+    ## TODO: Maybe check if there's another way, I made this because clear_all_attributes wasn't properly clearing
+    ## The fields without the deselection leading to duplicate fields thus this was born
+    ## IT STILL DOESNT WORK PO!
+    def clear_all_fields(self):
+        """Resets the UI to its initial state without affecting saved data."""
+        
+        self.product_family_input.setCurrentIndex(-1)  # Deselect product family
+        self.generated_description_label.setText("Generated Standard: \n")  # Reset text
+
+        # Removes all attribute dropdowns
+        while(self.attribute_layout.count()):
+            widget = self.attribute_layout.takeAt(0).widget()
+            if widget:
+                widget.hide()
+                widget.setParent(None)
                 widget.deleteLater()
 
     def on_family_input_changed(self):
@@ -120,6 +137,7 @@ class DescriptionStandardUI(QWidget):
         ## Unsure how to clear this in one go rn
         while(self.product_model_input.count()):
             self.product_model_input.removeItem(0)
+
         if(len(models) != 0):
             self.product_model_input.addItems(models)
             self.product_model_input.setEditable(True)
@@ -132,8 +150,10 @@ class DescriptionStandardUI(QWidget):
         ## TODO: POTENTIALLY ALLOW THE USER TO ADD MORE ATTRIBUTES TO THESE IF NECESSARY
         
         if(db.LoadModel(self.get_product_model())):
+            self.clear_all_attributes()
             parameters = db.LoadModelParameters(self.get_product_model())
             for x in parameters:
                 self.add_attribute_field(x)
         else:
+            self.clear_all_attributes()
             pass
