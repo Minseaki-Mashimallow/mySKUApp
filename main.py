@@ -1,10 +1,11 @@
 from PyQt6.QtWidgets import QApplication, QTabWidget, QWidget, QVBoxLayout
 from ui.sku_generator_ui import SKUGeneratorUI
-from ui.similarities_calculator_ui import SimilaritiesCalculatorUI
 from ui.description_standard_ui import DescriptionStandardUI
+from ui.description_standard_dict_ui import DescriptionDictionaryUI
 from controllers.sku_generator_controller import SKUGeneratorController
-from controllers.similarities_calculator_controller import SimilaritiesCalculatorController
 from controllers.description_standard_controller import DescriptionStandardController
+from controllers.description_standard_dict_controller import DescriptionDictionaryController
+
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -23,18 +24,18 @@ class MainWindow(QWidget):
         self.sku_ui = SKUGeneratorUI(available_families)
         self.sku_controller = SKUGeneratorController(self.sku_ui)
 
-        # Tab 2: Similarities Calculator
-        self.similarity_ui = SimilaritiesCalculatorUI()
-        self.similarity_controller = SimilaritiesCalculatorController(self.similarity_ui)
-
-        # Tab 3: Set Description Standard
+        # Tab 2: Set Description Standard
         self.standardization_ui = DescriptionStandardUI()
         self.standardization_controller = DescriptionStandardController(self.standardization_ui)
+
+        # Tab 3: Description Standard Dictionary
+        self.description_standard_dict_ui = DescriptionDictionaryUI()
+        self.description_standard_dict_controller = DescriptionDictionaryController(self.description_standard_dict_ui)
 
         # Add tabs to the main window
         self.tabs.addTab(self.standardization_ui, "Set Standard Description")
         self.tabs.addTab(self.sku_ui, "SKU Generator")
-        self.tabs.addTab(self.similarity_ui, "Similarities Calculator")
+        self.tabs.addTab(self.description_standard_dict_ui, "Description Standard Dictionary")
 
         # Layout for the whole window
         main_layout = QVBoxLayout(self)
