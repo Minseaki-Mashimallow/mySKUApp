@@ -76,6 +76,8 @@ class DescriptionStandardUI(QWidget):
         attribute_dropdown.setPlaceholderText("Select Attribute") 
         ## This guy needed SOMETHING to exist properly and so be able to be removed.
         attribute_dropdown.addItems([str(arg), ""])
+        if(arg):
+            attribute_dropdown.setCurrentIndex(0)
         self.attribute_layout.addWidget(attribute_dropdown)
 
     def get_product_family(self):
