@@ -2,9 +2,7 @@ from ui.description_standard_ui import DescriptionStandardUI
 from backend import database as db
 
 class DescriptionStandardController:
-    saved_descriptions = {} # { 'ICE CREAM': 'ICE CREAM-Color-Size' }
     saved_families = db.LoadFamilies() 
-    saved_attributes = set()
 
     def __init__(self, ui: DescriptionStandardUI):
         self.ui = ui
@@ -61,29 +59,12 @@ class DescriptionStandardController:
         if db.LoadModel(product_model):
             self.ui.show_save_fail()
         else:
-            print(db.LoadModels(product_family))
             db.CreateModel(product_model, product_family, attributes)
             self.ui.product_model_input.addItems([product_model])
             self.ui.show_save_confirmation()
 
 
-    
-    @classmethod
-    def get_saved_descriptions(cls):
-        """ Returns saved standards as {product_family: [attributes]} """
-        return {family: desc.split("-")[1:] for family, desc in cls.saved_descriptions.items()}
-    
-    @classmethod
-    def get_saved_families(cls):
-        """Returns the saved product families"""
-        return list(cls.saved_families)
-
-    @classmethod
-    def get_saved_attributes(cls):
-        """Returns the saved attributes"""
-        return list(cls.saved_attributes)
-
-
+   
 if __name__ == "__main__":
     existing_families = DescriptionStandardController.get_saved_families()
     existing_attributes = DescriptionStandardController.get_saved_attributes()

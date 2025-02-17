@@ -29,9 +29,11 @@ class DescriptionStandardUI(QWidget):
         self.product_model_input = QComboBox()
         self.product_model_input.setEditable(True)
         self.form_layout.addRow("Select or Enter Product Model:", self.product_model_input)
+       
+        self.product_model_input.currentTextChanged.connect(self.on_model_input_changed)
+
         self.main_layout.addLayout(self.form_layout)
 
-        self.product_model_input.currentTextChanged.connect(self.on_model_input_changed)
 
         # Attribute input
         self.attributes_label = QLabel("Attributes:")
@@ -75,7 +77,8 @@ class DescriptionStandardUI(QWidget):
         attribute_dropdown.setEditable(True)
         attribute_dropdown.setPlaceholderText("Select Attribute") 
         ## This guy needed SOMETHING to exist properly and so be able to be removed.
-        attribute_dropdown.addItems([str(arg), ""])
+        for x in arg:
+            attribute_dropdown.addItem(x)
         if(arg):
             attribute_dropdown.setCurrentIndex(0)
         self.attribute_layout.addWidget(attribute_dropdown)
@@ -146,7 +149,8 @@ class DescriptionStandardUI(QWidget):
             self.product_model_input.removeItem(0)
 
         if(len(models) != 0):
-            self.product_model_input.addItems(models)
+            for x in models:
+                self.product_model_input.addItem(x)
             self.product_model_input.setEditable(True)
         else:
             self.product_model_input.setEditable(True)

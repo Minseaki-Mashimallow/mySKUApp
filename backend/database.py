@@ -38,11 +38,13 @@ def LoadModelParameters(model_name: str):
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
     res = cur.execute("SELECT PARAMETERS FROM SKUMODEL WHERE SKUMODEL = '{model}'".format(model = model_name)).fetchone()
-    res = ast.literal_eval(str(res))
+    ast
+    res = ''.join(res)
     res = str(res).replace("'", "")
     res = res.replace("[", "")
     res = res.replace("]", "")
     res = res.split(", ")
+    print(res)
     return res
 
     

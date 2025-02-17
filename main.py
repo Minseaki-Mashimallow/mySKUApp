@@ -37,10 +37,17 @@ class MainWindow(QWidget):
         self.tabs.addTab(self.sku_ui, "SKU Generator")
         self.tabs.addTab(self.description_standard_dict_ui, "Description Standard Dictionary")
 
+        self.tabs.currentChanged.connect(lambda: self.updateTab(self.tabs.currentWidget()))
+
+
         # Layout for the whole window
         main_layout = QVBoxLayout(self)
         main_layout.addWidget(self.tabs)
         self.setLayout(main_layout)
+
+    def updateTab(self, tab):
+        tab.update()
+
 
 if __name__ == "__main__":
     app = QApplication([])
