@@ -1,10 +1,12 @@
 from PyQt6.QtWidgets import QApplication, QTabWidget, QWidget, QVBoxLayout
 from ui.sku_generator_ui import SKUGeneratorUI
 from ui.description_standard_ui import DescriptionStandardUI
-from ui.description_standard_dict_ui import DescriptionDictionaryUI
+from ui.sku_gen2_ui import DescriptionGeneratorUI
+from ui.add_new_description_ui import AddNewDescriptionUI
 from controllers.sku_generator_controller import SKUGeneratorController
 from controllers.description_standard_controller import DescriptionStandardController
-from controllers.description_standard_dict_controller import DescriptionDictionaryController
+from controllers.sku_gen2_controller import DescriptionGeneratorController
+from controllers.add_new_description_controller import AddNewDescriptionController
 
 
 class MainWindow(QWidget):
@@ -21,21 +23,28 @@ class MainWindow(QWidget):
         self.tabs = QTabWidget(self)
 
         # Tab 1: SKU Generator
-        self.sku_ui = SKUGeneratorUI(available_families)
-        self.sku_controller = SKUGeneratorController(self.sku_ui)
+        # self.sku_ui = SKUGeneratorUI(available_families)
+        # self.sku_controller = SKUGeneratorController(self.sku_ui)
 
-        # Tab 2: Set Description Standard
-        self.standardization_ui = DescriptionStandardUI()
-        self.standardization_controller = DescriptionStandardController(self.standardization_ui)
+        # # Tab 2: Set Description Standard
+        # self.standardization_ui = DescriptionStandardUI()
+        # self.standardization_controller = DescriptionStandardController(self.standardization_ui)
 
         # Tab 3: Description Standard Dictionary
-        self.description_standard_dict_ui = DescriptionDictionaryUI()
-        self.description_standard_dict_controller = DescriptionDictionaryController(self.description_standard_dict_ui)
+        self.description_generator_ui = DescriptionGeneratorUI()
+        self.description_generator_controller = DescriptionGeneratorController(self.description_generator_ui)
+
+        # Tab 4: Add New Description
+        self.add_new_description_ui = AddNewDescriptionUI()
+        self.add_new_description_controller = DescriptionGeneratorController(self.add_new_description_ui)
+
 
         # Add tabs to the main window
-        self.tabs.addTab(self.standardization_ui, "Set Standard Description")
-        self.tabs.addTab(self.sku_ui, "SKU Generator")
-        self.tabs.addTab(self.description_standard_dict_ui, "Description Standard Dictionary")
+        # self.tabs.addTab(self.standardization_ui, "Set Standard Description")
+        # self.tabs.addTab(self.sku_ui, "SKU Generator")
+        self.tabs.addTab(self.description_generator_ui, "SKU Generator")
+        self.tabs.addTab(self.add_new_description_ui, "Manage Descriptions")
+
 
         self.tabs.currentChanged.connect(lambda: self.updateTab(self.tabs.currentWidget()))
 
