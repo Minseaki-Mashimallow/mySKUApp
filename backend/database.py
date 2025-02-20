@@ -38,13 +38,11 @@ def LoadModelParameters(model_name: str):
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
     res = cur.execute("SELECT PARAMETERS FROM SKUMODEL WHERE SKUMODEL = '{model}'".format(model = model_name)).fetchone()
-    ast
     res = ''.join(res)
     res = str(res).replace("'", "")
     res = res.replace("[", "")
     res = res.replace("]", "")
     res = res.split(", ")
-    print(res)
     return res
 
     
@@ -93,4 +91,57 @@ def TestCreate():
     CreateCategory("Test")
     CreateFamily("TestFam", "Test")
     CreateModel("TestModel", "TestFam", ["Color", "Dimensions"])
+
+                                                    
+def LoadAttributeNames():
+    con = sqlite3.connect(dbloc)
+    cur = con.cursor()
+    res = cur.execute("SELECT ATTRIBUTENAME FROM ATTRIBUTE")
+    try:
+        res = res.fetchall()
+        res = list(map(lambda x: ''.join(x), res))
+        return res
+    except:
+        return []
+
+def LoadAttributes():
+    con = sqlite3.connect(dbloc)
+    cur = con.cursor()
+
+    res = LoadAttributeNames() 
+    res_dict = {}
+    try:
+
+        for x in res:
+            current_res = cur.execute("SELECT PARAMETERS FROM ATTRIBUTE WHERE ATTRIBUTENAME = '{}'".format(x)).fetchone()
+            listing = []
+            current_res = ''.join(current_res)
+            current_res = str(current_res).replace("'", "")
+            current_res = current_res.replace("[", "")
+            current_res = current_res.replace("]", "")
+            current_res = current_res.split(", ")
+            for x in current_res:
+                listing.append(x)
+            res_dict[x] = listing
+        return res_dict
+    except:
+        return res_dict
+
+
+
+def InsertDescriptions(skus):
+    
+    con = sqlite3.connect(dbloc)
+    cur = con.cursor()
+
+    for x in skus:
+        print(x)
+        try:
+            res = cur.execute("""INSERT INTO SKUDESCRIPTION (SKUDESCRIPTION) VALUES ("{}")""".format(x,))
+        except:
+            res = cur.execute("""INSERT INTO SKUDESCRIPTION (SKUDESCRIPTION) VALUES ('{}')""".format(x,))
+
+    con.commit()
+    con.close()
+
 
