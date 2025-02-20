@@ -3,6 +3,7 @@ import ast
 
 dbloc = "backend/skudb.db"
 
+""" LOADS ALL CURRENT SKU FAMILIES *** DEPRECATED ***"""
 def LoadFamilies():
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
@@ -14,6 +15,7 @@ def LoadFamilies():
     except:
         return []
 
+""" LOADS ALL CURRENT SKU MODELS *** DEPRECATED ***"""
 def LoadModels(family_name: str):
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
@@ -25,6 +27,7 @@ def LoadModels(family_name: str):
     except:
         return []
 
+""" LOADS THE MODEL BEING SELECTED *** DEPRECATED ***"""
 def LoadModel(model_name: str):
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
@@ -34,6 +37,7 @@ def LoadModel(model_name: str):
     except:
         return "Couldn't find"
 
+""" LOADS THE PARAMETERS OF AN SKU MODEL *** DEPRECATED ***"""
 def LoadModelParameters(model_name: str):
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
@@ -46,6 +50,7 @@ def LoadModelParameters(model_name: str):
     return res
 
     
+""" CREATES AN SKU CATEGORY *** DEPRECATED ***"""
 def CreateCategory(category_name: str):
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
@@ -54,6 +59,7 @@ def CreateCategory(category_name: str):
     con.commit()
     con.close()
 
+""" CREATES AN SKU FAMILY ***DEPRECATED***"""
 def CreateFamily(family_name: str, category_name: str):
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
@@ -62,6 +68,7 @@ def CreateFamily(family_name: str, category_name: str):
     con.commit()
     con.close()
 
+""" CREATES AN SKU MODEL *** DEPRECATED ***"""
 def CreateModel(model_name: str, family_name: str, parameters: list):
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
@@ -73,26 +80,8 @@ def CreateModel(model_name: str, family_name: str, parameters: list):
                     """.format(model = model_name, family = family_name, category = category, params = parameters))
     con.commit()
     con.close()
-
-
-    ## TODO: HAVE THIS WORKING
-def CreateSKU(sku_model: str, sku_desc: str, parameters: str):
-    con = sqlite3.connect(dbloc)
-    cur = con.cursor()
-    
-    family = cur.execute("SELECT SKUFAMILY FROM SKUMODEL WHERE SKUMODEL = '{model}'".format(model = sku_model)).fetchone()
-   
-    category = cur.execute("SELECT SKUCATEGORY FROM SKUMODEL WHERE SKUMODEL = '{model}'".format(model = sku_model)).fetchone() 
-    temp_code = len(cur.execute("SELECT SKUCODE FROM SKU").fetchall()) + 1
-    cur.execute("""INSERT INTO SKU (SKUCODE, SKUFAMILY, SKUMODEL, SKUCATEGORY, SKUDESCRIPTION, SKUPARAMETERS) 
-                    VALUES ('{code}', '{familiy}', '{model}', '{category}', '{desc}', '{params}')""")
-
-def TestCreate():
-    CreateCategory("Test")
-    CreateFamily("TestFam", "Test")
-    CreateModel("TestModel", "TestFam", ["Color", "Dimensions"])
-
                                                     
+""" LOADS ATTRIBUTENAMES """
 def LoadAttributeNames():
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
@@ -104,6 +93,7 @@ def LoadAttributeNames():
     except:
         return []
 
+""" LOADS ALL POSSIBLE ATTRIBUTES WITHIN EACH GROUP OF ATTRIBUTES """
 def LoadAttributes():
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
@@ -129,6 +119,7 @@ def LoadAttributes():
 
 
 
+""" ONE TIME USE FUNCTION FOR INSERTING ALL SKUDESCRIPTIONS INTO THE DATABASE """
 def InsertDescriptions(skus):
     
     con = sqlite3.connect(dbloc)
@@ -144,4 +135,14 @@ def InsertDescriptions(skus):
     con.commit()
     con.close()
 
-
+""" LOAD DESCRIPTIONS FROM THE SKUDESCRIPTION TABLE """
+def LoadDescriptions():
+    con = sqlite3.connect(dbloc)
+    cur = con.cursor()
+    res = cur.execute("SELECT SKUDESCRIPTION FROM SKUDESCRIPTION")
+    try:
+        res = res.fetchall()
+        res = list(map(lambda x: ''.join(x), res))
+        return res
+    except:
+        return []
