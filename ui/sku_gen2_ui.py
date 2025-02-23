@@ -73,7 +73,7 @@ class DescriptionGeneratorUI(QWidget):
         combo_box.setInsertPolicy(QComboBox.InsertPolicy.NoInsert)  # Prevent adding new items
         completer = QCompleter(parameters, self)  # Enable search functionality
         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        completer.setFilterMode(Qt.MatchFlag.MatchContains)
+        completer.setFilterMode(Qt.MatchFlags.MatchContains)
         combo_box.setCompleter(completer)  # Attach completer
         combo_box.addItems(parameters)  # Populate dropdown options
 
