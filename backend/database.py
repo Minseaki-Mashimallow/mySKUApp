@@ -110,8 +110,8 @@ def LoadAttributes():
             current_res = current_res.replace("[", "")
             current_res = current_res.replace("]", "")
             current_res = current_res.split(", ")
-            for x in current_res:
-                listing.append(x)
+            for y in current_res:
+                listing.append(y)
             res_dict[x] = listing
         return res_dict
     except:
