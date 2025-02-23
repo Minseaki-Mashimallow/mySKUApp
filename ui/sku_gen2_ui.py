@@ -22,27 +22,16 @@ class DescriptionGeneratorUI(QWidget):
         self.dropdowns = {}  # Store dropdown widgets
 
         # Create dropdowns
-        for key, value in self.attributes.items():
-            combo_box = QComboBox(self)
-            combo_box.setEditable(True)  # Allow typing for searching
-            combo_box.setInsertPolicy(QComboBox.InsertPolicy.NoInsert)  # Prevent adding new items
-            completer = QCompleter(value, self)  # Enable search functionality
-            completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-            completer.setFilterMode(Qt.MatchFlag.MatchContains)
-            combo_box.setCompleter(completer)  # Attach completer
-            combo_box.addItems(value)  # Populate dropdown options
-
-            combo_box.setCurrentIndex(-1)  # Start with an empty field
-            self.dropdowns[key] = combo_box  # Store reference
-
-            # Connect the selection process to update generated description
-            combo_box.activated.connect(self.add_to_description)
-
-            # Connect editingFinished signal from the line edit to clear the dropdown
-            combo_box.lineEdit().editingFinished.connect(self.clear_dropdown_after_editing)
-
-            self.form_layout.addRow(key, combo_box)
-
+        self.make_qcbox_for_attribute("Product Model", self.attributes["Product Model"])
+        self.make_qcbox_for_attribute("Material", self.attributes["Material"])
+        self.make_qcbox_for_attribute("Size", self.attributes["Size"])
+        self.make_qcbox_for_attribute("Dimension", self.attributes["Dimension"])
+        self.make_qcbox_for_attribute("Type", self.attributes["Type"])
+        self.make_qcbox_for_attribute("Parts", self.attributes["Parts"])
+        self.make_qcbox_for_attribute("Shape", self.attributes["Shape"])
+        self.make_qcbox_for_attribute("Color", self.attributes["Color"])
+        self.make_qcbox_for_attribute("Additional Features", self.attributes["Additional Features"])
+            
         self.main_layout.addLayout(self.form_layout)
 
         # Generated Description Section
@@ -77,6 +66,27 @@ class DescriptionGeneratorUI(QWidget):
         self.check_similarity_button.clicked.connect(self.check_similarity)
         self.copyNsave_button.clicked.connect(self.copy_and_save_description)
 
+
+    def make_qcbox_for_attribute(self, attribute, parameters):
+        combo_box = QComboBox(self)
+        combo_box.setEditable(True)  # Allow typing for searching
+        combo_box.setInsertPolicy(QComboBox.InsertPolicy.NoInsert)  # Prevent adding new items
+        completer = QCompleter(parameters, self)  # Enable search functionality
+        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        completer.setFilterMode(Qt.MatchFlag.MatchContains)
+        combo_box.setCompleter(completer)  # Attach completer
+        combo_box.addItems(parameters)  # Populate dropdown options
+
+        combo_box.setCurrentIndex(-1)  # Start with an empty field
+        self.dropdowns[attribute] = combo_box  # Store reference
+
+        # Connect the selection process to update generated description
+        combo_box.activated.connect(self.add_to_description)
+
+        # Connect editingFinished signal from the line edit to clear the dropdown
+        combo_box.lineEdit().editingFinished.connect(self.clear_dropdown_after_editing)
+
+        self.form_layout.addRow(attribute, combo_box)
 
     def add_to_description(self, index):
         """ Add the selected dropdown value to the generated description """
