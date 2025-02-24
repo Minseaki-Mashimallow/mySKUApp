@@ -51,6 +51,10 @@ class AddNewDescriptionUI(QWidget):
         self.edit_button.clicked.connect(self.edit_value)
         self.delete_button.clicked.connect(self.delete_value)
 
+    
+    def get_current_attribute_label(self):
+        return self.attribute_selector.currentText()
+
     def load_attribute_values(self):
         """ Loads the values of the selected attribute into the list widget """
         selected_attribute = self.attribute_selector.currentText()
@@ -73,7 +77,7 @@ class AddNewDescriptionUI(QWidget):
 
         # Update the attribute list
         self.attributes[selected_attribute].append(new_value)
-        db.SaveAttributes(self.attributes)  # Save changes to database
+        db.UpdateAttributes(self.attributes, self.get_current_attribute_label())  # Save changes to database
         self.load_attribute_values()  # Refresh list
         self.message_label.setText(f'"{new_value}" added to {selected_attribute}.')
 
@@ -99,7 +103,7 @@ class AddNewDescriptionUI(QWidget):
         # Update the list
         index = self.attributes[selected_attribute].index(old_value)
         self.attributes[selected_attribute][index] = new_value
-        db.SaveAttributes(self.attributes)  # Save changes to database
+        db.UpdateAttributes(self.attributes, self.get_current_attribute_label())  # Save changes to database
         self.load_attribute_values()  # Refresh list
         self.message_label.setText(f'"{old_value}" changed to "{new_value}".')
 
@@ -118,6 +122,6 @@ class AddNewDescriptionUI(QWidget):
         
         if confirm == QMessageBox.StandardButton.Yes:
             self.attributes[selected_attribute].remove(selected_item.text())
-            db.SaveAttributes(self.attributes)  # Save changes to database
+            db.UpdateAttributes(self.attributes, self.get_current_attribute_label())  # Save changes to database
             self.load_attribute_values()  # Refresh
             self.message_label.setText(f'"{selected_item.text()}" deleted from {selected_attribute}.')

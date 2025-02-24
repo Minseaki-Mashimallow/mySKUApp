@@ -146,3 +146,13 @@ def LoadDescriptions():
         return res
     except:
         return []
+
+
+def UpdateAttributes(attributes, attribute_name):
+    con = sqlite3.connect(dbloc)
+    cur = con.cursor()
+    query = 'UPDATE ATTRIBUTE SET PARAMETERS=? WHERE ATTRIBUTENAME=?'
+    cur.execute(query, (str(attributes[attribute_name]), attribute_name)) 
+    con.commit()
+    con.close()
+    
