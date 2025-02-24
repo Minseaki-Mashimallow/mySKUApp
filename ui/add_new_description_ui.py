@@ -15,6 +15,12 @@ class AddNewDescriptionUI(QWidget):
         self.main_layout.addWidget(QLabel("Select Attribute:"))
         self.main_layout.addWidget(self.attribute_selector)
 
+        # **Search Bar**
+        self.search_bar = QLineEdit(self)
+        self.search_bar.setPlaceholderText("Search...")
+        self.search_bar.textChanged.connect(self.filter_list)
+        self.main_layout.addWidget(self.search_bar)
+
         self.scroll_area = QScrollArea(self)
         self.list_widget = QListWidget(self)
         self.scroll_area.setWidgetResizable(True)
@@ -61,6 +67,13 @@ class AddNewDescriptionUI(QWidget):
         self.list_widget.clear()
         if selected_attribute in self.attributes:
             self.list_widget.addItems(self.attributes[selected_attribute])
+
+    def filter_list(self):
+        """ Filters list based on search bar input """
+        search_text = self.search_bar.text().strip().lower()
+        for i in range(self.list_widget.count()):
+            item = self.list_widget.item(i)
+            item.setHidden(search_text not in item.text().lower())
 
     def add_value(self):
         """ Adds a new value to the selected attribute """
