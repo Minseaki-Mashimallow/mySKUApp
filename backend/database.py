@@ -156,3 +156,10 @@ def UpdateAttributes(attributes, attribute_name):
     con.commit()
     con.close()
     
+
+def AddDescription(description):
+    con = sqlite3.connect(dbloc)
+    cur = con.cursor()
+    cur.execute(f"INSERT INTO SKUDESCRIPTION (SKUDESCRIPTION) VALUES ('{description}')") 
+    con.commit()
+    con.close()

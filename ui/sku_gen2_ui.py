@@ -175,6 +175,8 @@ class DescriptionGeneratorUI(QWidget):
 
         # Step 2: Save the generated description to the current descriptions list
         self.current_descriptions.append(generated_description)  # Add to the list of current descriptions
+        db.AddDescription(generated_description)
+        
 
         # Optionally, show a confirmation message
         self.save_message.setText(f"Description copied and saved: {generated_description}")
