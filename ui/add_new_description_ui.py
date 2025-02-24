@@ -144,3 +144,8 @@ class AddNewDescriptionUI(QWidget):
             db.UpdateAttributes(self.attributes, self.get_current_attribute_label())  # Save changes to database
             self.load_attribute_values()  # Refresh
             self.message_label.setText(f'"{selected_item.text()}" deleted from {selected_attribute}.')
+
+    def update(self):
+        self.attributes = db.LoadAttributes()
+        self.attribute_selector.clear()
+        self.attribute_selector.addItems(self.attributes)
