@@ -133,17 +133,28 @@ class AddNewDescriptionUI(QWidget):
         msg_box = QMessageBox(self)
         msg_box.setWindowTitle("Confirm Delete")
         msg_box.setText(f"Are you sure you want to delete '{selected_item.text()}'?")
-        msg_box.setStandardButtons(QMessageBox.StandardButtons.Yes | QMessageBox.StandardButtons.No)
+        try:
+            msg_box.setStandardButtons(QMessageBox.StandardButtons.Yes | QMessageBox.StandardButtons.No)
+        except:
+            msg_box.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
     
         # Execute the dialog and check the selected button
         confirm = msg_box.exec()
 
         # Extract button and compare using standardButton()
-        if msg_box.standardButton(msg_box.clickedButton()) == QMessageBox.StandardButtons.Yes:
-            self.attributes[selected_attribute].remove(selected_item.text())
-            db.UpdateAttributes(self.attributes, self.get_current_attribute_label())  # Save changes to database
-            self.load_attribute_values()  # Refresh
-            self.message_label.setText(f'"{selected_item.text()}" deleted from {selected_attribute}.')
+        try:
+            if msg_box.standardButton(msg_box.clickedButton()) == QMessageBox.StandardButtons.Yes:
+                self.attributes[selected_attribute].remove(selected_item.text())
+                db.UpdateAttributes(self.attributes, self.get_current_attribute_label())  # Save changes to database
+                self.load_attribute_values()  # Refresh
+                self.message_label.setText(f'"{selected_item.text()}" deleted from {selected_attribute}.')
+        except:
+            if msg_box.standardButton(msg_box.clickedButton()) == QMessageBox.standardButtons(msg_box).Yes:
+                self.attributes[selected_attribute].remove(selected_item.text())
+                db.UpdateAttributes(self.attributes, self.get_current_attribute_label())  # Save changes to database
+                self.load_attribute_values()  # Refresh
+                self.message_label.setText(f'"{selected_item.text()}" deleted from {selected_attribute}.')
+
 
     def update(self):
         self.attributes = db.LoadAttributes()
