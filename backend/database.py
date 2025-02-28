@@ -41,7 +41,7 @@ def LoadModel(model_name: str):
 def LoadModelParameters(model_name: str):
     con = sqlite3.connect(dbloc)
     cur = con.cursor()
-    res = cur.execute("SELECT PARAMETERS FROM SKUMODEL WHERE SKUMODEL = '{model}'".format(model = model_name)).fetchone()
+    res = cur.execute("SELECT ATTRIBUTES FROM SKUMODEL WHERE SKUMODEL = '{model}'".format(model = model_name)).fetchone()
     res = ''.join(res)
     res = str(res).replace("'", "")
     res = res.replace("[", "")
@@ -75,7 +75,7 @@ def CreateModel(model_name: str, family_name: str, parameters: list):
     ## Searches for the Category of the Family 
     category = cur.execute("""SELECT SKUCATEGORY FROM SKUFAMILY 
                                 WHERE SKUFAMILY = '{fam}'""".format(fam = family_name)).fetchone()[0]
-    cur.execute("""INSERT INTO SKUMODEL (SKUMODEL, SKUFAMILY, SKUCATEGORY, PARAMETERS)
+    cur.execute("""INSERT INTO SKUMODEL (SKUMODEL, SKUFAMILY, SKUCATEGORY, ATTRIBUTES)
                     VALUES('{model}', '{family}', '{category}', "{params}")
                     """.format(model = model_name, family = family_name, category = category, params = parameters))
     con.commit()

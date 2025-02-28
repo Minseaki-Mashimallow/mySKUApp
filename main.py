@@ -23,28 +23,28 @@ class MainWindow(QWidget):
         self.tabs = QTabWidget(self)
 
         # Tab 1: SKU Generator
-        # self.sku_ui = SKUGeneratorUI(available_families)
-        # self.sku_controller = SKUGeneratorController(self.sku_ui)
+        self.sku_ui = SKUGeneratorUI(available_families)
+        self.sku_controller = SKUGeneratorController(self.sku_ui)
 
         # # Tab 2: Set Description Standard
-        # self.standardization_ui = DescriptionStandardUI()
-        # self.standardization_controller = DescriptionStandardController(self.standardization_ui)
-
-        # Tab 3: Description Standard Dictionary
-        self.description_generator_ui = DescriptionGeneratorUI()
-        self.description_generator_controller = DescriptionGeneratorController(self.description_generator_ui)
-
-        # Tab 4: Add New Description
-        self.add_new_description_ui = AddNewDescriptionUI()
-        self.add_new_description_controller = DescriptionGeneratorController(self.add_new_description_ui)
-
+        self.standardization_ui = DescriptionStandardUI()
+        self.standardization_controller = DescriptionStandardController(self.standardization_ui)
+        #
+        # # Tab 3: Description Standard Dictionary
+        # self.description_generator_ui = DescriptionGeneratorUI()
+        # self.description_generator_controller = DescriptionGeneratorController(self.description_generator_ui)
+        #
+        # # Tab 4: Add New Description
+        # self.add_new_description_ui = AddNewDescriptionUI()
+        # self.add_new_description_controller = DescriptionGeneratorController(self.add_new_description_ui)
+        #
 
         # Add tabs to the main window
-        # self.tabs.addTab(self.standardization_ui, "Set Standard Description")
-        # self.tabs.addTab(self.sku_ui, "SKU Generator")
-        self.tabs.addTab(self.description_generator_ui, "SKU Generator")
-        self.tabs.addTab(self.add_new_description_ui, "Manage Descriptions")
-
+        self.tabs.addTab(self.standardization_ui, "Set Standard Description")
+        self.tabs.addTab(self.sku_ui, "SKU Generator")
+        # self.tabs.addTab(self.description_generator_ui, "SKU Generator")
+        # self.tabs.addTab(self.add_new_description_ui, "Manage Descriptions")
+        #
 
         self.tabs.currentChanged.connect(lambda: self.updateTab(self.tabs.currentWidget()))
 
