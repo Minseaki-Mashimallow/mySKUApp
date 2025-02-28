@@ -68,6 +68,7 @@ class SKUGeneratorUI(QWidget):
         attribute_dropdown.setPlaceholderText("Select Attribute") 
         ## This guy needed SOMETHING to exist properly and so be able to be removed.
         for x in arg:
+            print(db.LoadAttribute(x))
             attribute_dropdown.addItems(db.LoadAttribute(x))
         if(arg):
             attribute_dropdown.setCurrentIndex(0)
@@ -80,6 +81,7 @@ class SKUGeneratorUI(QWidget):
         if(db.LoadModel(self.get_product_model())):
             parameters = db.LoadModelParameters(self.get_product_model())
             for x in parameters:
+                print(x)
                 self.add_attribute_field(x)
 
     def clear_all_fields(self):

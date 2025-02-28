@@ -122,20 +122,16 @@ def LoadAttribute(attribute_name):
     cur = con.cursor()
 
     listing = []
-    try:
-        for x in res:
-            res = cur.execute("SELECT PARAMETERS FROM ATTRIBUTE WHERE ATTRIBUTENAME ='{}'".format(x)).fetchone()
-            res = ''.join(res)
-            res = str(res).replace("'", "")
-            res = res.replace("[", "")
-            res = res.replace("]", "")
-            res = res.split(", ")
-            for y in res:
-                listing.append(y)
-            return listing
-    except:
+    res = cur.execute("SELECT PARAMETERS FROM ATTRIBUTE WHERE ATTRIBUTENAME ='{}'".format(attribute_name)).fetchone()
+    for x in res:
+        res = ''.join(res)
+        res = str(res).replace("'", "")
+        res = res.replace("[", "")
+        res = res.replace("]", "")
+        res = res.split(", ")
+        for y in res:
+            listing.append(y)
         return listing
-            
 
 """ ONE TIME USE FUNCTION FOR INSERTING ALL SKUDESCRIPTIONS INTO THE DATABASE """
 def InsertDescriptions(skus):
