@@ -67,9 +67,8 @@ class SKUGeneratorUI(QWidget):
         attribute_dropdown.setEditable(True)
         attribute_dropdown.setPlaceholderText("Select Attribute") 
         ## This guy needed SOMETHING to exist properly and so be able to be removed.
-
         for x in arg:
-            attribute_dropdown.addItem(x)
+            attribute_dropdown.addItems(db.LoadAttribute(x))
         if(arg):
             attribute_dropdown.setCurrentIndex(0)
         self.attribute_layout.addWidget(attribute_dropdown)
