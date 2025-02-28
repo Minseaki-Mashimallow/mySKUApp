@@ -81,6 +81,8 @@ class DescriptionStandardUI(QWidget):
             attribute_dropdown.addItem(x)
         if(arg):
             attribute_dropdown.setCurrentIndex(0)
+        else:
+            attribute_dropdown.addItems(db.LoadAttributeNames())
         self.attribute_layout.addWidget(attribute_dropdown)
 
     def get_product_family(self):

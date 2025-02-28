@@ -117,8 +117,6 @@ def LoadAttributes():
     except:
         return res_dict
 
-
-
 """ ONE TIME USE FUNCTION FOR INSERTING ALL SKUDESCRIPTIONS INTO THE DATABASE """
 def InsertDescriptions(skus):
     
