@@ -101,9 +101,8 @@ def LoadAttributes():
     res = LoadAttributeNames() 
     res_dict = {}
     try:
-
-        for x in res:
-            current_res = cur.execute("SELECT PARAMETERS FROM ATTRIBUTE WHERE ATTRIBUTENAME = '{}'".format(x)).fetchone()
+        for attribute_name in res:
+            current_res = cur.execute("SELECT PARAMETERS FROM ATTRIBUTE WHERE ATTRIBUTENAME = '{}'".format(attribute_name)).fetchone()
             listing = []
             current_res = ''.join(current_res)
             current_res = str(current_res).replace("'", "")
@@ -112,7 +111,7 @@ def LoadAttributes():
             current_res = current_res.split(", ")
             for y in current_res:
                 listing.append(y)
-            res_dict[x] = listing
+            res_dict[attribute_name] = listing
         return res_dict
     except:
         return res_dict
@@ -140,7 +139,6 @@ def InsertDescriptions(skus):
     cur = con.cursor()
 
     for x in skus:
-        print(x)
         try:
             res = cur.execute("""INSERT INTO SKUDESCRIPTION (SKUDESCRIPTION) VALUES ("{}")""".format(x,))
         except:

@@ -31,10 +31,28 @@ class SKUGeneratorController:
             self.ui.sku_result.setText("Error: Please fill all required attributes.")
             return
 
-        attribute_dict = {}
+        p_no_list = ["Type", "Material", "Size", "Dimension"]
+        mod_list = ["Parts", "Color"]
+        desc_list = ["Additional Features"]
+
+        part_no = []
+        model_list = []
+        description_list = []
+        for x in attributes:
+            current_attribute = db.LoadAttribute(x)
+            for attr in attribute_values:
+                if attr in current_attribute:
+                    if x in p_no_list:
+                        part_no.append(attr)
+
+                    if x in mod_list:
+                        model_list.append(attr)
+
+                    if x in desc_list:
+                        description_list.append(attr)
 
         # generate sku based on standard
-        generated_sku = f"{selected_model} " + " ".join(attribute_values)
+        generated_sku = f"{selected_model} " + " Part Number " +  " ".join(part_no) + " Model List " + " ".join(model_list) + " Description " + " ".join(description_list)
         self.ui.sku_result.setText(f"Generated SKU: {generated_sku}")
 
         self.ui.copy_button.setEnabled(True)  # enable copy  
