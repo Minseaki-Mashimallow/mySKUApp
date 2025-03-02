@@ -78,10 +78,11 @@ class SKUGeneratorUI(QWidget):
         ## TODO: SPECIFICALLY CLEAR THE ATTRIBUTES ONLY, NOT INCLUDING THE MODEL AND FAMILY
         ## TODO: HAVE IT SET SO THAT YOU CAN ONLY HAVE THESE AND THEY ARE LOCKED ONCE YOU SELECT A MODEL THAT'S ALREADY MADE 
         ## TODO: POTENTIALLY ALLOW THE USER TO ADD MORE ATTRIBUTES TO THESE IF NECESSARY
+
+        self.clear_attribute_layout()
         if(db.LoadModel(self.get_product_model())):
             parameters = db.LoadModelParameters(self.get_product_model())
             for x in parameters:
-                print(x)
                 self.add_attribute_field(x)
 
     def clear_all_fields(self):
@@ -89,8 +90,13 @@ class SKUGeneratorUI(QWidget):
         self.family_input.setCurrentIndex(-1)
         self.sku_result.setText("Generated SKU: ")
 
-        for widget in self.attribute_fields.values():
-            widget.hide()
+        while(self.attribute_layout.count()):
+            widget = self.attribute_layout.takeAt(0).widget()
+            if widget:
+                widget.hide()
+                widget.setParent(None)
+                widget.deleteLater()
+
 
     def get_product_family(self):
         """Returns the entered product family"""
@@ -130,6 +136,16 @@ class SKUGeneratorUI(QWidget):
                 widget.hide()
                 widget.setParent(None)
                 widget.deleteLater()
+       
+    def clear_attribute_layout(self): 
+        while(self.attribute_layout.count()):
+            widget = self.attribute_layout.takeAt(0).widget()
+            if widget:
+                widget.hide()
+                widget.setParent(None)
+                widget.deleteLater()
+
+
  
     def get_attributes(self):
         """Returns selected attributes as a list from dropdowns"""
