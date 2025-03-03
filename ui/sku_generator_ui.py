@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFormLayout, QPushButton, QLabel, QComboBox, QApplication
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFormLayout, QPushButton, QLabel, QComboBox, QApplication
 from PyQt6.QtCore import Qt
 from backend import database as db 
 
@@ -45,6 +45,19 @@ class SKUGeneratorUI(QWidget):
         self.layout.addWidget(self.copy_button)
 
 
+        self.similarity_layout = QHBoxLayout()
+
+        self.similarity_button = QPushButton("Calculate Similarity")
+        self.similarity_text = QLabel("Similarity: ")
+        self.similarity_report = QLabel("")
+
+        self.similarity_layout.addWidget(self.similarity_button)
+        self.similarity_layout.addWidget(self.similarity_text)
+        self.similarity_layout.addWidget(self.similarity_report)
+
+        self.layout.addLayout(self.similarity_layout)
+
+
     def on_family_selected(self):
         """Handles product family selection and displays related attributes dynamically."""
         ## TODO: UPDATE THIS TO HAVE IT SET TO FALSE IF THERE IS NO AVAILABLE MODELS WITHIN THE FAMILY? 
@@ -68,7 +81,6 @@ class SKUGeneratorUI(QWidget):
         attribute_dropdown.setPlaceholderText("Select Attribute") 
         ## This guy needed SOMETHING to exist properly and so be able to be removed.
         for x in arg:
-            print(db.LoadAttribute(x))
             attribute_dropdown.addItems(db.LoadAttribute(x))
             label = QLabel()
             label.setText(x)
@@ -85,6 +97,9 @@ class SKUGeneratorUI(QWidget):
             parameters = db.LoadModelParameters(self.get_product_model())
             for x in parameters:
                 self.add_attribute_field(x)
+        
+        self.similarity_report.setText("")
+
 
     def clear_all_fields(self):
         """Resets all fields to initial state."""
@@ -97,6 +112,8 @@ class SKUGeneratorUI(QWidget):
                 widget.hide()
                 widget.setParent(None)
                 widget.deleteLater()
+
+        self.similarity_report.setText("")
 
 
     def get_product_family(self):
@@ -128,6 +145,10 @@ class SKUGeneratorUI(QWidget):
 
         self.form_layout.addRow("Product Family:", self.family_input)
         self.form_layout.addRow("Product Model:", self.model_input)
+
+
+
+        self.similarity_report.setText("")
 
 
     def clear_form_layout(self):

@@ -135,7 +135,6 @@ class DescriptionGeneratorUI(QWidget):
         current_sku = self.current_descriptions[0]  # Start with the first description as the current SKU
         list_of_skus = []
         dictionary = {}
-        list_of_colors = ["black", "blue", "yellow", "orange", "green", "grey", "gray", "natural", "transparent", "gold", "white", "amber", "clear", "platinum", "emerald", "dark"]
 
         # Iterate through the descriptions and calculate similarity
         for index, sku in enumerate(self.current_descriptions):
@@ -145,14 +144,8 @@ class DescriptionGeneratorUI(QWidget):
                 list_of_skus = []
                 current_sku = sku
                 list_of_skus.append({current_sku: lv.jaro_winkler(current_sku, sku)})
-            else:
-                for color in list_of_colors:
-                    if color in sku.lower():
-                        sku = sku.replace(color, "")
-                        array_of_issues = [cur_ratio, "colors"]
-                        list_of_skus.append({sku: array_of_issues})
+                # Find the best match
 
-        # Find the best match
         all_descriptions = self.current_descriptions + [generated_description]
         similarity_scores = [lv.jaro_winkler(generated_description, desc) for desc in self.current_descriptions]
     
