@@ -70,8 +70,9 @@ class SKUGeneratorUI(QWidget):
         for x in arg:
             print(db.LoadAttribute(x))
             attribute_dropdown.addItems(db.LoadAttribute(x))
-        if(arg):
-            attribute_dropdown.setCurrentIndex(0)
+            label = QLabel()
+            label.setText(x)
+        self.attribute_layout.addWidget(label)
         self.attribute_layout.addWidget(attribute_dropdown)
 
     def on_model_selected(self):

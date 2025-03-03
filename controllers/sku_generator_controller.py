@@ -22,12 +22,15 @@ class SKUGeneratorController:
 
         attribute_check = False
 
-        for x in attribute_values:
-            if x in attributes:
-                attribute_check = True
-                break
+        if(len(attribute_values) != 0):
+            for x in attribute_values:
+                if x in attributes:
+                    attribute_check = True
+                    break
+        else:
+            attribute_check = True
 
-        if not all(attribute_values) or attribute_check:  # ensure all attributes are filled
+        if attribute_check or not all(attribute_values):  # ensure all attributes are filled
             self.ui.sku_result.setText("Error: Please fill all required attributes.")
             return
 
