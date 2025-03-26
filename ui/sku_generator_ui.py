@@ -105,7 +105,11 @@ class SKUGeneratorUI(QWidget):
             # add autocompleter functionality
             completer = QCompleter(db.LoadAttribute(x), self)
             completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-            completer.setFilterMode(Qt.MatchFlags.MatchContains)  
+
+            try:
+                completer.setFilterMode(Qt.MatchFlags.MatchContains)
+            except:
+                completer.setFilterMode(Qt.MatchFlag.MatchContains)
             attribute_dropdown.setCompleter(completer)
 
             label = QLabel(x)
@@ -169,7 +173,10 @@ class SKUGeneratorUI(QWidget):
         # autocompleter functionality
         family_completer = QCompleter(self.available_families, self)
         family_completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        family_completer.setFilterMode(Qt.MatchFlags.MatchContains)  
+        try:
+            family_completer.setFilterMode(Qt.MatchFlags.MatchContains)
+        except:
+            family_completer.setFilterMode(Qt.MatchFlag.MatchContains)  
         self.family_input.setCompleter(family_completer)
 
         self.model_input = QComboBox()

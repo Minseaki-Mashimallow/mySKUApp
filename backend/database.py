@@ -1,7 +1,13 @@
 import sqlite3
 import ast
+import sys, os
 
-dbloc = "backend/skudb.db"
+if getattr(sys, 'frozen', False):
+    dbloc = "_internal/skudb.db"
+    application_path = sys._MEIPASS
+else:
+    dbloc = "backend/skudb.db"
+    application_path = os.path.dirname(os.path.abspath(__file__))
 
 """ LOADS ALL CURRENT SKU FAMILIES *** DEPRECATED ***"""
 def LoadFamilies():
