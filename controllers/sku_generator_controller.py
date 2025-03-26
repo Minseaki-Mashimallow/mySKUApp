@@ -124,8 +124,9 @@ class SKUGeneratorController:
         clipboard.setText(generated_description)  # Set the clipboard text to the generated description
 
         # Save the generated description to the current descriptions list
-        self.current_descriptions.append(save_long_sku) 
-        db.AddDescription(save_long_sku)
+        if save_long_sku not in self.current_descriptions:
+            self.current_descriptions.append(save_long_sku) 
+            db.AddDescription(save_long_sku)
 
         # Show a confirmation message
         self.ui.copy_message.setText(f"Description copied and saved! \n{save_long_sku}")
