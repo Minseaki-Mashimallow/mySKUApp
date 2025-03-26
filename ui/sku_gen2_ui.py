@@ -165,16 +165,15 @@ class DescriptionGeneratorUI(QWidget):
             self.error_message.setText("Please generate a description first.")
             return
         
-        # Step 1: Copy the generated description to the clipboard
-        clipboard = QApplication.clipboard()  # Access the clipboard
+        # Copy the generated description to the clipboard
+        clipboard = QApplication.clipboard() 
         clipboard.setText(generated_description)  # Set the clipboard text to the generated description
 
-        # Step 2: Save the generated description to the current descriptions list
+        # Save the generated description to the current descriptions list
         self.current_descriptions.append(generated_description)  # Add to the list of current descriptions
         db.AddDescription(generated_description)
-        
 
-        # Optionally, show a confirmation message
+        # Show a confirmation message
         self.save_message.setText(f"Description copied and saved: {generated_description}")
 
     def update(self):

@@ -13,7 +13,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("SKU Generator")
+        self.setWindowTitle("SKU Name Generator")
         self.setGeometry(100, 100, 600, 400)
 
         # saved product families from DescriptionStandardController
@@ -42,7 +42,7 @@ class MainWindow(QWidget):
         # Add tabs to the main window
         self.tabs.addTab(self.standardization_ui, "Set Standard Description")
         self.tabs.addTab(self.sku_ui, "SKU Generator")
-        self.tabs.addTab(self.description_generator_ui, "SKU Generator")
+        self.tabs.addTab(self.description_generator_ui, "SKU Generator Free Form")
         self.tabs.addTab(self.add_new_description_ui, "Manage Descriptions")
 
 
